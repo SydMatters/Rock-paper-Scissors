@@ -43,7 +43,7 @@ class GameObject {
     }
 
     // Método para mostrar el resultado en la interfaz de usuario
-    showResult(result, opponentChoice, player1, player2) {
+    showResult(result, opponentChoice, player2) {
         const notification = document.querySelector(".notification");
         const notificationLabel = document.querySelector(".notification-header label");
         const notificationBodyLabel = document.querySelector(".notification-body label");
@@ -54,7 +54,7 @@ class GameObject {
         notification.style.display = "block";
         setTimeout(() => {
             notification.style.display = "none";
-        }, 3000);
+        }, 4000);
 
         // Actualizar puntos
         if (result === "Player 1 wins!") {
@@ -140,6 +140,10 @@ function playAgainstComputer(playerType) {
 
     if (intentosRestantes === 0) {
         let ganador = determinarGanador();
+        if(ganador == 0){
+            mensajeElement.textContent = `Es un empate señores`;
+            mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
+        }
         if(ganador == 1){
             mensajeElement.textContent = `El ganador es Player 1\n El Player 2 perdio`;
             mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
@@ -193,16 +197,18 @@ function resetChoices() {
 
 // Event listeners para las opciones de los jugadores
 const opciones = document.querySelectorAll(".option");
-opciones.forEach(opcion => {
-    opcion.addEventListener("click", function() {
-        const playerType = this.id;
-        if (contraComputadora) {
-            playAgainstComputer(playerType);
-        } else {
-            handlePlayerOptions(playerType);
-        }
+    for (let i = 0; i < opciones.length; i++) {
+        opciones[i].addEventListener("click", function() {
+            const playerType = this.id;
+            if(totalGames > 0){
+                if (contraComputadora) {
+                    playAgainstComputer(playerType);
+                } else {
+                    handlePlayerOptions(playerType);
+            };
+        };
     });
-});
+}
 
 // Event listener para el botón de cambio de modo
 const changeModeBtn = document.querySelector(".button-mode");
