@@ -1,3 +1,4 @@
+// Clase GameObject
 class GameObject {
     constructor() {
         this.totalGames = 0; // Variable para almacenar el número total de juegos
@@ -113,6 +114,17 @@ function updatePoints() {
     player2PointsElement.textContent = `Player 2 Points: ${player2Points}`;
 }
 
+// Función para determinar el ganador
+function determinarGanador() {
+    if (player1Points > player2Points) {
+        return 1;
+    } else if (player2Points > player1Points) {
+        return 2;
+    } else {
+        return 0;
+    }
+}
+
 // Escuchar cambios en el input de intentos
 document.getElementById('intentos').addEventListener('change', handleIntentosInput);
 
@@ -124,9 +136,17 @@ function playAgainstComputer(playerType) {
         game.playAgainstComputer(playerType);
         intentosRestantes--;
         updateIntentosRestantes(); // Actualizar el contador de intentos restantes en la UI
-    } else {
-        mensajeElement.textContent = 'Se han agotado los intentos. Reinicia el juego.';
-        mensajeElement.style.color = 'red'; // Cambiar color del mensaje a rojo
+    } 
+
+    if (intentosRestantes === 0) {
+        let ganador = determinarGanador();
+        if(ganador == 1){
+            mensajeElement.textContent = `El ganador es Player 1\n El Player 2 perdio`;
+            mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
+        }else {
+            mensajeElement.textContent = `El ganador es Player 2 \n El Player 1 perdio`;
+            mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
+        }
     }
 }
 
@@ -149,8 +169,19 @@ function handlePlayerOptions(playerType) {
             resetChoices();
         }
     } else {
-        mensajeElement.textContent = 'Se han agotado los intentos. Reinicia el juego.';
-        mensajeElement.style.color = 'red'; // Cambiar color del mensaje a rojo
+        let ganador = determinarGanador();
+        if(ganador == 0){
+            mensajeElement.textContent = `Es un empate señores`;
+            mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
+        }
+        if(ganador == 1){
+            mensajeElement.textContent = `El ganador es Player 1\n El Player 2 perdio`;
+            mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
+        }else {
+            mensajeElement.textContent = `El ganador es Player 2 \n El Player 1 perdio`;
+            mensajeElement.style.color = 'green'; // Cambiar color del mensaje a verde
+        }
+
     }
 }
 
